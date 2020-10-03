@@ -39,7 +39,9 @@
 # in some circumstances, or passed as a command line argument.
 
 import adi
-my_ad7124 = adi.ad7124(uri="ip:192.168.86.43") # Connect to AD7124 (on remote Pi)
+# my_ad7124 = adi.ad7124(uri="ip:192.168.86.43") # Connect to AD7124
+                                                 # (on remote Pi, replace ip address accordingly)
+my_ad7124 = adi.ad7124(uri="ip:localhost") # Connect to AD7124 (locally, through iiod)
 ad_channel = 0 # Set channel
 my_ad7124.channel[ad_channel].scale = 0.0002983 # Set PGA gain
 my_ad7124.sample_rate = 128  # Set sample rate
@@ -51,6 +53,9 @@ my_ad7124.rx_enabled_channels = [ad_channel] # Only one supported for now
 my_ad7124.rx_buffer_size = 1024
 my_ad7124._ctx.set_timeout(100000) #Sloooow converter
 data = my_ad7124.rx() # Fetch buffer of samples
+
+print("A single raw reading: ", v0)
+print("A few buffered readings: ", data[:16])
 del my_ad7124 # Clean up
 
 # At this point, "v0" has a single ADC reading that can be multiplied by the scale

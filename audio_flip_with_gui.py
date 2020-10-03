@@ -59,7 +59,7 @@ flipped_plot.set_title("Flipped Audio Waveform")
 flipped_plot.set_xlabel("Samples")
 flipped_plot.set_ylabel("Flipped Audio")
 
-ctx=libm2k.m2kOpen()
+ctx=libm2k.m2kOpen("ip:192.168.2.1")
 
 if ctx is None:
     print("Failed connection:No device available")

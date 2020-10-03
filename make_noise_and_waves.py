@@ -52,10 +52,11 @@ from matplotlib import pyplot as plt
 data = np.ndarray(1024, dtype=float)
 
 for t in range(1024):
-    data[t] = np.cos(2.0*np.pi*10*(t/1024))
+    data[t] = 1.0*np.cos(2.0*np.pi*10*(t/1024))
 
 offset = 0.000
-rmsnoise = 0.42e-6
+#rmsnoise = 0.42e-6 # AD7124 noise, refer to datasheet modes
+rmsnoise = 0.1 # Visible relative to cosine w/ amplitude 1.0
 
 noise = np.random.normal(loc=offset, scale=rmsnoise, size=1024)
 measured_noise = np.std(noise)

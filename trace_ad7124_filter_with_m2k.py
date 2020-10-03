@@ -37,7 +37,7 @@ import numpy as np
 from scipy import signal
 import libm2k
 import math
-sys.path.insert(0, "/home/cristinasuteu/pyadi-iio")
+#sys.path.insert(0, "/home/cristinasuteu/pyadi-iio")
 import adi
 from time import sleep
 
@@ -113,9 +113,9 @@ def sine_buffer_generator(frequency, amplitude, offset, phase):
 
 
 # Set up ADALM2000
-def setup_m2k():
+def setup_m2k(m2k_backend = None):
     print("Setting up M2K...")
-    context = libm2k.m2kOpen()
+    context = libm2k.m2kOpen(m2k_backend)
     context.calibrateADC()
     context.calibrateDAC()
     siggen = context.getAnalogOut()
@@ -172,7 +172,8 @@ my_ip = sys.argv[1] if len(sys.argv) >= 2 else hardcoded_ip
 plt_time_domain = True  # Super useful for debugging, but time domain plot gets messy if you
 
 n_buff = 1 # number of buffers
-ctx, my_siggen = setup_m2k()
+# Default to network backend, default ip. USB context not working on Kuiper Linux.
+ctx, my_siggen = setup_m2k("ip:192.168.2.1")
 my_ad7124 = setup_ad7124(my_ip)
 response = []
 

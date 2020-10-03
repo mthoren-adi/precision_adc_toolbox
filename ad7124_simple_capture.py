@@ -32,9 +32,11 @@
 # THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import adi
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import signal
+import sys
 
 # Set up AD7124
 

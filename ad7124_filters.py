@@ -89,6 +89,17 @@ sinc4_50 /= np.sum(sinc4_50)
 filt_50_60_rej /= np.sum(filt_50_60_rej)
 
 
+# freqz: Compute the frequency response of a digital filter.
+# Older versions of SicPy return w as radians / sample, newer take an optional
+# sample rate argument (fs). Computing frequencies (freqs)
+# manually for backwards compatibility.
+
+w, h = signal.freqz(filt_50_60_rej, 1, worN=16385, whole=False) #, fs=f0)
+freqs = w * f0/(2.0*np.pi)
+hmax = abs(max(h)) #Normalize to unity
+response_dB = 20.0 * np.log10(abs(h)/hmax)
+
+
 plt.figure(1)
 plt.title('50Hz SINC1,2,4, and 50/60Hz SINC4 impulse responses')
 plt.ylabel('tap val.')
@@ -97,21 +108,13 @@ plt.plot(sinc2_50)
 plt.plot(sinc4_50)
 plt.plot(filt_50_60_rej)
 plt.xlabel('tap number')
-plt.xlim(xmin=-100, xmax= 1.1* len(filt_50_60_rej))
+plt.xlim(left=-100, right= 1.1* len(filt_50_60_rej))
 plt.grid()
-plt.show()
-
-# freqz
-
-w, h = signal.freqz(filt_50_60_rej, 1, worN=16385, whole=False, fs=f0)
-hmax = max(h) #Normalize to unity
-response_dB = 20.0 * np.log10(abs(h)/hmax)
 
 plt.figure(2)
-plt.plot(w, response_dB, zorder=1)
-
+plt.plot(freqs, response_dB, zorder=1)
 plt.title('50/60Hz reject filter response')
-plt.xlabel('freq.')
+plt.xlabel('Frequency')
 plt.ylabel('Rejection')
 plt.axis([0, 150, -120, 1])
 plt.show()
